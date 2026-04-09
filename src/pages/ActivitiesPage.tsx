@@ -13,7 +13,7 @@ import { Select } from '@/components/ui/Select'
 import { Modal } from '@/components/ui/Modal'
 import { PageLoader } from '@/components/ui/Spinner'
 import { ACTIVITY_STATUS_LABELS } from '@/lib/constants'
-import { Plus, Search } from 'lucide-react'
+import { Plus, Search, CalendarDays } from 'lucide-react'
 
 export default function ActivitiesPage() {
   const [filters, setFilters] = useState({ search: '', status: '', programa_id: '' })
@@ -59,9 +59,14 @@ export default function ActivitiesPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Actividades</h1>
-          <p className="text-muted text-sm mt-1">Registro de actividades por programa</p>
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-500 to-teal-600 flex items-center justify-center shadow-lg shadow-teal-500/10">
+            <CalendarDays size={18} className="text-white" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold text-slate-900">Actividades</h1>
+            <p className="text-slate-500 text-sm mt-0.5">Registro de actividades por programa</p>
+          </div>
         </div>
         <Button onClick={() => setOpen(true)}><Plus size={16} /> Nueva actividad</Button>
       </div>
@@ -70,12 +75,12 @@ export default function ActivitiesPage() {
         <CardContent>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="relative">
-              <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted" />
+              <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
               <input
                 placeholder="Buscar actividad..."
                 value={filters.search}
                 onChange={e => setFilters({ ...filters, search: e.target.value })}
-                className="w-full pl-9 pr-3 py-2 text-sm rounded-lg border border-border focus:border-accent focus:outline-none"
+                className="w-full pl-10 pr-4 py-2.5 text-sm rounded-xl border border-slate-200 focus:border-blue-400 focus:outline-none focus:ring-4 focus:ring-blue-500/10 transition-all"
               />
             </div>
             <Select value={filters.status} onChange={e => setFilters({ ...filters, status: e.target.value })} options={[{ value: 'programada', label: 'Programada' }, { value: 'realizada', label: 'Realizada' }, { value: 'cancelada', label: 'Cancelada' }]} placeholder="Todos los estados" />
@@ -93,7 +98,7 @@ export default function ActivitiesPage() {
             <tbody>
               {activities.map(a => (
                 <Tr key={a.id}>
-                  <Td className="font-medium">{a.nombre}</Td>
+                  <Td className="font-semibold text-slate-800">{a.nombre}</Td>
                   <Td>{a.programa?.nombre || '—'}</Td>
                   <Td>{a.subprograma?.nombre || '—'}</Td>
                   <Td>{a.profesional?.full_name || '—'}</Td>
@@ -103,7 +108,7 @@ export default function ActivitiesPage() {
                 </Tr>
               ))}
               {activities.length === 0 && (
-                <tr><Td className="text-center text-muted !py-8" colSpan={7}>No hay actividades</Td></tr>
+                <tr><Td className="text-center text-slate-400 !py-8" colSpan={7}>No hay actividades</Td></tr>
               )}
             </tbody>
           </Table>
@@ -112,7 +117,7 @@ export default function ActivitiesPage() {
 
       <Modal open={open} onClose={() => setOpen(false)} title="Registrar actividad">
         <form onSubmit={handleSubmit} className="space-y-4">
-          {error && <div className="bg-red-50 text-danger text-sm rounded-lg px-4 py-3">{error}</div>}
+          {error && <div className="bg-red-50 text-red-600 text-sm rounded-xl px-4 py-3 font-medium border border-red-100">{error}</div>}
           <Input label="Nombre de la actividad" value={form.nombre} onChange={e => setForm({ ...form, nombre: e.target.value })} required />
           <div className="grid grid-cols-2 gap-4">
             <Select label="Programa" value={form.programa_id} onChange={e => setForm({ ...form, programa_id: e.target.value, subprograma_id: '' })} options={programs.map(p => ({ value: p.id, label: p.nombre }))} placeholder="Seleccionar" />
@@ -124,7 +129,7 @@ export default function ActivitiesPage() {
             <Input label="Lugar" value={form.lugar} onChange={e => setForm({ ...form, lugar: e.target.value })} />
           </div>
           <Select label="Estado" value={form.status} onChange={e => setForm({ ...form, status: e.target.value })} options={[{ value: 'programada', label: 'Programada' }, { value: 'realizada', label: 'Realizada' }, { value: 'cancelada', label: 'Cancelada' }]} />
-          <div className="flex justify-end gap-3 pt-2">
+          <div className="flex justify-end gap-3 pt-3">
             <Button variant="secondary" type="button" onClick={() => setOpen(false)}>Cancelar</Button>
             <Button type="submit" disabled={saving}>{saving ? 'Guardando...' : 'Crear actividad'}</Button>
           </div>

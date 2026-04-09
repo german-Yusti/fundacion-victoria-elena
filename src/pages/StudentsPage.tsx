@@ -11,7 +11,7 @@ import { Select } from '@/components/ui/Select'
 import { Modal } from '@/components/ui/Modal'
 import { PageLoader } from '@/components/ui/Spinner'
 import { STUDENT_STATUS_LABELS, DOCUMENT_TYPES } from '@/lib/constants'
-import { Plus, Search } from 'lucide-react'
+import { Plus, Search, GraduationCap } from 'lucide-react'
 
 export default function StudentsPage() {
   const [filters, setFilters] = useState({ search: '', status: '', programa_id: '', subprograma_id: '' })
@@ -61,9 +61,14 @@ export default function StudentsPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Estudiantes</h1>
-          <p className="text-muted text-sm mt-1">Registro y consulta de estudiantes</p>
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shadow-lg shadow-blue-500/10">
+            <GraduationCap size={18} className="text-white" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold text-slate-900">Estudiantes</h1>
+            <p className="text-slate-500 text-sm mt-0.5">Registro y consulta de estudiantes</p>
+          </div>
         </div>
         <Button onClick={() => setOpen(true)}><Plus size={16} /> Nuevo estudiante</Button>
       </div>
@@ -73,12 +78,12 @@ export default function StudentsPage() {
         <CardContent>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <div className="relative">
-              <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted" />
+              <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
               <input
                 placeholder="Buscar por nombre o documento..."
                 value={filters.search}
                 onChange={e => setFilters({ ...filters, search: e.target.value })}
-                className="w-full pl-9 pr-3 py-2 text-sm rounded-lg border border-border focus:border-accent focus:outline-none"
+                className="w-full pl-10 pr-4 py-2.5 text-sm rounded-xl border border-slate-200 focus:border-blue-400 focus:outline-none focus:ring-4 focus:ring-blue-500/10 transition-all"
               />
             </div>
             <Select
@@ -119,7 +124,7 @@ export default function StudentsPage() {
             <tbody>
               {students.map(s => (
                 <Tr key={s.id}>
-                  <Td className="font-medium">{s.apellidos}, {s.nombres}</Td>
+                  <Td className="font-semibold text-slate-800">{s.apellidos}, {s.nombres}</Td>
                   <Td>{s.tipo_documento} {s.numero_documento}</Td>
                   <Td>{s.programa?.nombre || '—'}</Td>
                   <Td>{s.subprograma?.nombre || '—'}</Td>
@@ -128,7 +133,7 @@ export default function StudentsPage() {
                 </Tr>
               ))}
               {students.length === 0 && (
-                <tr><Td className="text-center text-muted !py-8" colSpan={6}>No se encontraron estudiantes</Td></tr>
+                <tr><Td className="text-center text-slate-400 !py-8" colSpan={6}>No se encontraron estudiantes</Td></tr>
               )}
             </tbody>
           </Table>
@@ -138,7 +143,7 @@ export default function StudentsPage() {
       {/* Modal */}
       <Modal open={open} onClose={() => setOpen(false)} title="Registrar estudiante" size="lg">
         <form onSubmit={handleSubmit} className="space-y-4">
-          {error && <div className="bg-red-50 text-danger text-sm rounded-lg px-4 py-3">{error}</div>}
+          {error && <div className="bg-red-50 text-red-600 text-sm rounded-xl px-4 py-3 font-medium border border-red-100">{error}</div>}
           <div className="grid grid-cols-2 gap-4">
             <Input label="Nombres" value={form.nombres} onChange={e => setForm({ ...form, nombres: e.target.value })} required />
             <Input label="Apellidos" value={form.apellidos} onChange={e => setForm({ ...form, apellidos: e.target.value })} required />
@@ -160,17 +165,17 @@ export default function StudentsPage() {
             <Input label="Teléfono del acudiente" value={form.acudiente_telefono} onChange={e => setForm({ ...form, acudiente_telefono: e.target.value })} />
           </div>
           <Select label="Estado" value={form.status} onChange={e => setForm({ ...form, status: e.target.value })} options={[{ value: 'activo', label: 'Activo' }, { value: 'inactivo', label: 'Inactivo' }, { value: 'seguimiento_especial', label: 'Seguimiento especial' }]} />
-          <div className="space-y-2">
-            <label className="flex items-center gap-2 text-sm">
-              <input type="checkbox" checked={form.autorizacion_datos} onChange={e => setForm({ ...form, autorizacion_datos: e.target.checked })} className="rounded" />
-              Autorización de tratamiento de datos personales
+          <div className="space-y-3 pt-1">
+            <label className="flex items-center gap-3 text-sm cursor-pointer">
+              <input type="checkbox" checked={form.autorizacion_datos} onChange={e => setForm({ ...form, autorizacion_datos: e.target.checked })} className="w-4 h-4 rounded" />
+              <span className="text-slate-700">Autorización de tratamiento de datos personales</span>
             </label>
-            <label className="flex items-center gap-2 text-sm">
-              <input type="checkbox" checked={form.autorizacion_imagen} onChange={e => setForm({ ...form, autorizacion_imagen: e.target.checked })} className="rounded" />
-              Autorización de uso de imagen
+            <label className="flex items-center gap-3 text-sm cursor-pointer">
+              <input type="checkbox" checked={form.autorizacion_imagen} onChange={e => setForm({ ...form, autorizacion_imagen: e.target.checked })} className="w-4 h-4 rounded" />
+              <span className="text-slate-700">Autorización de uso de imagen</span>
             </label>
           </div>
-          <div className="flex justify-end gap-3 pt-2">
+          <div className="flex justify-end gap-3 pt-3">
             <Button variant="secondary" type="button" onClick={() => setOpen(false)}>Cancelar</Button>
             <Button type="submit" disabled={saving}>{saving ? 'Guardando...' : 'Registrar estudiante'}</Button>
           </div>

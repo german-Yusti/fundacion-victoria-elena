@@ -29,15 +29,15 @@ export function Modal({ open, onClose, title, children, size = 'md' }: ModalProp
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <div className="absolute inset-0 bg-black/50" onClick={onClose} />
-      <div className={`relative bg-white rounded-xl shadow-xl w-full ${widthClass} mx-4 max-h-[90vh] flex flex-col`}>
-        <div className="flex items-center justify-between px-6 py-4 border-b border-border">
-          <h2 className="text-lg font-semibold text-gray-900">{title}</h2>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 cursor-pointer">
-            <X size={20} />
+      <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={onClose} />
+      <div className={`relative bg-white rounded-2xl shadow-2xl shadow-slate-900/10 w-full ${widthClass} mx-4 max-h-[90vh] flex flex-col border border-slate-200/50 animate-in`}>
+        <div className="flex items-center justify-between px-7 py-5 border-b border-slate-100">
+          <h2 className="text-lg font-bold text-slate-900">{title}</h2>
+          <button onClick={onClose} className="p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer">
+            <X size={18} />
           </button>
         </div>
-        <div className="px-6 py-4 overflow-y-auto">
+        <div className="px-7 py-5 overflow-y-auto">
           {children}
         </div>
       </div>

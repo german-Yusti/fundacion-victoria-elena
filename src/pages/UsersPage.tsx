@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import { useUsers } from '@/hooks/useUsers'
 import { usePrograms } from '@/hooks/usePrograms'
-import { Card, CardContent, CardHeader } from '@/components/ui/Card'
+import { Card, CardContent } from '@/components/ui/Card'
 import { Table, Thead, Th, Td, Tr } from '@/components/ui/Table'
 import { Badge, statusBadgeVariant } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
@@ -10,7 +10,7 @@ import { Select } from '@/components/ui/Select'
 import { Modal } from '@/components/ui/Modal'
 import { PageLoader } from '@/components/ui/Spinner'
 import { ROLE_LABELS } from '@/lib/constants'
-import { Plus } from 'lucide-react'
+import { Plus, UserCog } from 'lucide-react'
 
 export default function UsersPage() {
   const { users, loading, createUser } = useUsers()
@@ -39,37 +39,37 @@ export default function UsersPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Usuarios y roles</h1>
-          <p className="text-muted text-sm mt-1">Administrar usuarios del sistema</p>
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-slate-600 to-slate-700 flex items-center justify-center shadow-lg shadow-slate-500/10">
+            <UserCog size={18} className="text-white" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold text-slate-900">Usuarios y roles</h1>
+            <p className="text-slate-500 text-sm mt-0.5">Administrar usuarios del sistema</p>
+          </div>
         </div>
-        <Button onClick={() => setOpen(true)}>
-          <Plus size={16} /> Nuevo usuario
-        </Button>
+        <Button onClick={() => setOpen(true)}><Plus size={16} /> Nuevo usuario</Button>
       </div>
 
       <Card>
         <CardContent className="!p-0">
           <Table>
             <Thead>
-              <tr>
-                <Th>Nombre</Th>
-                <Th>Email</Th>
-                <Th>Rol</Th>
-                <Th>Estado</Th>
-              </tr>
+              <tr><Th>Nombre</Th><Th>Email</Th><Th>Rol</Th><Th>Estado</Th></tr>
             </Thead>
             <tbody>
               {users.map(user => (
                 <Tr key={user.id}>
-                  <Td className="font-medium">{user.full_name}</Td>
+                  <Td className="font-semibold text-slate-800">{user.full_name}</Td>
                   <Td>{user.email}</Td>
                   <Td>
-                    {user.user_roles.map(r => (
-                      <Badge key={r.id} variant="info" className="mr-1">
-                        {ROLE_LABELS[r.role] || r.role}
-                      </Badge>
-                    ))}
+                    <div className="flex gap-1.5">
+                      {user.user_roles.map(r => (
+                        <Badge key={r.id} variant="info">
+                          {ROLE_LABELS[r.role] || r.role}
+                        </Badge>
+                      ))}
+                    </div>
                   </Td>
                   <Td>
                     <Badge variant={statusBadgeVariant(user.status)}>
@@ -79,7 +79,7 @@ export default function UsersPage() {
                 </Tr>
               ))}
               {users.length === 0 && (
-                <tr><Td className="text-center text-muted !py-8" colSpan={4}>No hay usuarios registrados</Td></tr>
+                <tr><Td className="text-center text-slate-400 !py-8" colSpan={4}>No hay usuarios registrados</Td></tr>
               )}
             </tbody>
           </Table>
@@ -88,7 +88,7 @@ export default function UsersPage() {
 
       <Modal open={open} onClose={() => setOpen(false)} title="Crear usuario">
         <form onSubmit={handleSubmit} className="space-y-4">
-          {error && <div className="bg-red-50 text-danger text-sm rounded-lg px-4 py-3">{error}</div>}
+          {error && <div className="bg-red-50 text-red-600 text-sm rounded-xl px-4 py-3 font-medium border border-red-100">{error}</div>}
           <Input label="Nombre completo" value={form.fullName} onChange={e => setForm({ ...form, fullName: e.target.value })} required />
           <Input label="Email" type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} required />
           <Input label="Contraseña" type="password" value={form.password} onChange={e => setForm({ ...form, password: e.target.value })} minLength={6} required />
@@ -111,7 +111,7 @@ export default function UsersPage() {
               placeholder="Seleccionar programa (opcional)"
             />
           )}
-          <div className="flex justify-end gap-3 pt-2">
+          <div className="flex justify-end gap-3 pt-3">
             <Button variant="secondary" type="button" onClick={() => setOpen(false)}>Cancelar</Button>
             <Button type="submit" disabled={saving}>{saving ? 'Creando...' : 'Crear usuario'}</Button>
           </div>

@@ -12,7 +12,7 @@ import { Input } from '@/components/ui/Input'
 import { Table, Thead, Th, Td, Tr } from '@/components/ui/Table'
 import { Badge } from '@/components/ui/Badge'
 import { PageLoader } from '@/components/ui/Spinner'
-import { Users, UserCheck, AlertTriangle, ClipboardCheck, Star } from 'lucide-react'
+import { Users, UserCheck, AlertTriangle, ClipboardCheck, Star, FileBarChart } from 'lucide-react'
 
 interface ReportRow {
   id: string
@@ -138,9 +138,14 @@ export default function ReportPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900">Reporte de seguimiento</h1>
-        <p className="text-muted text-sm mt-1">Consolidado de seguimiento de estudiantes</p>
+      <div className="flex items-center gap-3">
+        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-cyan-600 flex items-center justify-center shadow-lg shadow-cyan-500/10">
+          <FileBarChart size={18} className="text-white" />
+        </div>
+        <div>
+          <h1 className="text-2xl font-bold text-slate-900">Reporte de seguimiento</h1>
+          <p className="text-slate-500 text-sm mt-0.5">Consolidado de seguimiento de estudiantes</p>
+        </div>
       </div>
 
       {/* Filters */}

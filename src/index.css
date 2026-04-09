@@ -1,26 +1,67 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #1e3a5f;
-  --color-primary-light: #2c5282;
-  --color-primary-dark: #152a43;
-  --color-accent: #3182ce;
-  --color-success: #38a169;
-  --color-warning: #d69e2e;
-  --color-danger: #e53e3e;
-  --color-muted: #718096;
-  --color-surface: #f7fafc;
-  --color-surface-alt: #edf2f7;
+  /* Primary palette — deep navy to vibrant blue */
+  --color-primary: #0f172a;
+  --color-primary-light: #1e293b;
+  --color-primary-dark: #020617;
+  --color-accent: #3b82f6;
+  --color-accent-light: #60a5fa;
+  --color-accent-dark: #2563eb;
+
+  /* Semantic */
+  --color-success: #10b981;
+  --color-success-light: #d1fae5;
+  --color-warning: #f59e0b;
+  --color-warning-light: #fef3c7;
+  --color-danger: #ef4444;
+  --color-danger-light: #fee2e2;
+
+  /* Neutrals */
+  --color-muted: #64748b;
+  --color-surface: #f8fafc;
+  --color-surface-alt: #f1f5f9;
   --color-border: #e2e8f0;
+  --color-border-light: #f1f5f9;
 }
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 body {
   margin: 0;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   background-color: var(--color-surface);
-  color: #1a202c;
+  color: #0f172a;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 * {
   box-sizing: border-box;
+}
+
+/* Smooth scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Global transitions */
+a, button, input, select, textarea {
+  transition: all 0.15s ease;
+}
+
+/* Custom checkbox style */
+input[type="checkbox"] {
+  accent-color: var(--color-accent);
 }

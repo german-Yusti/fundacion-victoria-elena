@@ -10,7 +10,7 @@ import { Select } from '@/components/ui/Select'
 import { Textarea } from '@/components/ui/Textarea'
 import { Modal } from '@/components/ui/Modal'
 import { PageLoader } from '@/components/ui/Spinner'
-import { Plus } from 'lucide-react'
+import { Plus, FolderOpen } from 'lucide-react'
 
 export default function ProgramsPage() {
   const { programs, loading, create } = usePrograms()
@@ -43,9 +43,14 @@ export default function ProgramsPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Programas</h1>
-          <p className="text-muted text-sm mt-1">Administrar programas de la fundación</p>
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center shadow-lg shadow-purple-500/10">
+            <FolderOpen size={18} className="text-white" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold text-slate-900">Programas</h1>
+            <p className="text-slate-500 text-sm mt-0.5">Administrar programas de la fundación</p>
+          </div>
         </div>
         <Button onClick={() => setOpen(true)}><Plus size={16} /> Nuevo programa</Button>
       </div>
@@ -59,14 +64,14 @@ export default function ProgramsPage() {
             <tbody>
               {programs.map(p => (
                 <Tr key={p.id}>
-                  <Td className="font-medium">{p.nombre}</Td>
-                  <Td className="text-muted max-w-xs truncate">{p.descripcion || '—'}</Td>
+                  <Td className="font-semibold text-slate-800">{p.nombre}</Td>
+                  <Td className="text-slate-500 max-w-xs truncate">{p.descripcion || '—'}</Td>
                   <Td>{p.profesional?.full_name || '—'}</Td>
                   <Td><Badge variant={statusBadgeVariant(p.status)}>{p.status === 'activo' ? 'Activo' : 'Inactivo'}</Badge></Td>
                 </Tr>
               ))}
               {programs.length === 0 && (
-                <tr><Td className="text-center text-muted !py-8" colSpan={4}>No hay programas</Td></tr>
+                <tr><Td className="text-center text-slate-400 !py-8" colSpan={4}>No hay programas</Td></tr>
               )}
             </tbody>
           </Table>
@@ -75,23 +80,12 @@ export default function ProgramsPage() {
 
       <Modal open={open} onClose={() => setOpen(false)} title="Crear programa">
         <form onSubmit={handleSubmit} className="space-y-4">
-          {error && <div className="bg-red-50 text-danger text-sm rounded-lg px-4 py-3">{error}</div>}
+          {error && <div className="bg-red-50 text-red-600 text-sm rounded-xl px-4 py-3 font-medium border border-red-100">{error}</div>}
           <Input label="Nombre" value={form.nombre} onChange={e => setForm({ ...form, nombre: e.target.value })} required />
           <Textarea label="Descripción" value={form.descripcion} onChange={e => setForm({ ...form, descripcion: e.target.value })} />
-          <Select
-            label="Profesional responsable"
-            value={form.profesional_id}
-            onChange={e => setForm({ ...form, profesional_id: e.target.value })}
-            options={profesionales.map(p => ({ value: p.id, label: p.full_name }))}
-            placeholder="Seleccionar profesional"
-          />
-          <Select
-            label="Estado"
-            value={form.status}
-            onChange={e => setForm({ ...form, status: e.target.value })}
-            options={[{ value: 'activo', label: 'Activo' }, { value: 'inactivo', label: 'Inactivo' }]}
-          />
-          <div className="flex justify-end gap-3 pt-2">
+          <Select label="Profesional responsable" value={form.profesional_id} onChange={e => setForm({ ...form, profesional_id: e.target.value })} options={profesionales.map(p => ({ value: p.id, label: p.full_name }))} placeholder="Seleccionar profesional" />
+          <Select label="Estado" value={form.status} onChange={e => setForm({ ...form, status: e.target.value })} options={[{ value: 'activo', label: 'Activo' }, { value: 'inactivo', label: 'Inactivo' }]} />
+          <div className="flex justify-end gap-3 pt-3">
             <Button variant="secondary" type="button" onClick={() => setOpen(false)}>Cancelar</Button>
             <Button type="submit" disabled={saving}>{saving ? 'Guardando...' : 'Crear programa'}</Button>
           </div>
